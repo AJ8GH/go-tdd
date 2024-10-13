@@ -2,10 +2,16 @@ package main
 
 import "fmt"
 
-func Hello() string {
-	return "Hello, world"
+const englishHelloTemplate = "Hello, %v"
+const defaultName = "world"
+
+func Hello(name string) string {
+	if name == "" {
+		name = defaultName
+	}
+	return fmt.Sprintf(englishHelloTemplate, name)
 }
 
 func main() {
-	fmt.Println(Hello())
+	fmt.Println(Hello("Adam"))
 }

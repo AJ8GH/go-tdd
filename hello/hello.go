@@ -2,24 +2,35 @@ package main
 
 import "fmt"
 
-const english = "English"
-const spanish = "Spanish"
-const englishHelloTemplate = "Hello, %v"
-const spanishHelloTemplate = "Hola, %v"
-const defaultName = "world"
+const (
+	defaultName = "world"
 
-var languages = map[string]string{
-	english: englishHelloTemplate,
-	spanish: spanishHelloTemplate,
-}
+	french  = "French"
+	spanish = "Spanish"
+
+	englishHelloTemplate = "Hello, %v"
+	frenchHelloTemplate  = "Bonjour, %v"
+	spanishHelloTemplate = "Hola, %v"
+)
 
 func Hello(name, language string) string {
 	if name == "" {
 		name = defaultName
 	}
-	return fmt.Sprintf(languages[language], name)
+	return fmt.Sprintf(getTemplate(language), name)
 }
 
 func main() {
 	fmt.Println(Hello("Adam", "English"))
+}
+
+func getTemplate(language string) string {
+	switch language {
+	case spanish:
+		return spanishHelloTemplate
+	case french:
+		return frenchHelloTemplate
+	default:
+		return englishHelloTemplate
+	}
 }

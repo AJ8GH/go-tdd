@@ -1,5 +1,9 @@
 package geometry
 
-func Perimeter(h, w float64) float64 {
-	return h*2 + w*2
+func Perimeter(r Rectangle) float64 {
+	return (r.Height + r.Width) * 2
+}
+
+func Area(r Rectangle) float64 {
+	return r.Height * r.Width
 }

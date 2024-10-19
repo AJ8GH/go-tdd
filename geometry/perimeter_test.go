@@ -3,8 +3,16 @@ package geometry
 import "testing"
 
 func TestPerimeter(t *testing.T) {
-	got := Perimeter(4.5, 0.8)
+	r := Rectangle{4.5, 0.8}
+	got := Perimeter(r)
 	want := 10.6
+	assert(t, got, want)
+}
+
+func TestArea(t *testing.T) {
+	r := Rectangle{9.4, 7.3}
+	got := Area(r)
+	want := 68.62
 	assert(t, got, want)
 }
 

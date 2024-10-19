@@ -27,7 +27,9 @@ func SumAll(ints [][]int) []int {
 func SumAllTails(ints [][]int) []int {
 	var out []int
 	for _, s := range ints {
-		out = append(out, s[len(s)-1])
+		if len(s) > 0 {
+			out = append(out, s[len(s)-1])
+		}
 	}
 	return out
 }

@@ -2,8 +2,8 @@ package geometry
 
 import "testing"
 
-func assert(t *testing.T, got, want float64) {
+func assert(t *testing.T, shape Shape, got, want float64) {
 	if got != want {
-		t.Errorf("got %g want %g", got, want)
+		t.Errorf("%#v got %g want %g", shape, got, want)
 	}
 }

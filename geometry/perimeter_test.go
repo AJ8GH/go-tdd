@@ -16,8 +16,14 @@ func TestArea(t *testing.T) {
 	assert(t, got, want)
 }
 
+func TestAreaCircle(t *testing.T) {
+	c := Circle{10}
+	got := c.Area()
+	want := 314.1592653589793
+	assert(t, got, want)
+}
 func assert(t *testing.T, got, want float64) {
 	if got != want {
-		t.Errorf("got %f want %f", got, want)
+		t.Errorf("got %g want %g", got, want)
 	}
 }

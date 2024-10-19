@@ -3,15 +3,18 @@ package geometry
 import "testing"
 
 func TestArea(t *testing.T) {
-	t.Run("rectangle", func(t *testing.T) {
-		r := Rectangle{9.4, 7.3}
-		checkArea(t, r, 68.62)
-	})
+	cases := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{9.4, 7.3}, 68.62},
+		{Rectangle{4, 2}, 8},
+		{Circle{10}, 314.1592653589793},
+	}
 
-	t.Run("circle", func(t *testing.T) {
-		c := Circle{10}
-		checkArea(t, c, 314.1592653589793)
-	})
+	for _, tt := range cases {
+		checkArea(t, tt.shape, tt.want)
+	}
 }
 
 func checkArea(t *testing.T, s Shape, want float64) {

@@ -3,15 +3,17 @@ package geometry
 import "testing"
 
 func TestPerimeter(t *testing.T) {
-	t.Run("rectangle", func(t *testing.T) {
-		r := Rectangle{4.5, 0.8}
-		checkPerimeter(t, r, 10.6)
-	})
+	cases := []struct {
+		shape Shape
+		want  float64
+	}{
+		{Rectangle{4.5, 0.8}, 10.6},
+		{Circle{10}, 62.83185307179586},
+	}
 
-	t.Run("circle", func(t *testing.T) {
-		c := Circle{10}
-		checkPerimeter(t, c, 62.83185307179586)
-	})
+	for _, tt := range cases {
+		checkPerimeter(t, tt.shape, tt.want)
+	}
 }
 
 func checkPerimeter(t *testing.T, s Shape, want float64) {

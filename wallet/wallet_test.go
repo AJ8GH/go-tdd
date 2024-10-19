@@ -1,4 +1,4 @@
-package pointers
+package wallet
 
 import (
 	"testing"
@@ -14,26 +14,28 @@ func TestWallet(t *testing.T) {
 	t.Run("withdraw", func(t *testing.T) {
 		w := Wallet{10}
 		err := w.Withdraw(5)
-		if err != nil {
-			t.Errorf("error should be nil but got %q", err)
-		}
+		assertError(t, err, nil)
 		assert(t, w, 5)
 	})
 
 	t.Run("withdraw error", func(t *testing.T) {
 		w := Wallet{10}
 		err := w.Withdraw(500)
-		if err == nil {
-			t.Errorf("wanted error but got nil")
-		}
-		assert(t, w, 10)
+		assertError(t, err, ErrInsufficientFunds)
 	})
 }
 
-func assert(t *testing.T, w Wallet, want Bitcoin) {
+func assert(t testing.TB, w Wallet, want Bitcoin) {
 	t.Helper()
 	got := w.Balance()
 	if got != want {
 		t.Errorf("got %s, want %s", got, want)
+	}
+}
+
+func assertError(t testing.TB, got, want error) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %q want %q", got, want)
 	}
 }

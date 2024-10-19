@@ -9,6 +9,7 @@ func TestPerimeter(t *testing.T) {
 	}{
 		{Rectangle{4.5, 0.8}, 10.6},
 		{Circle{10}, 62.83185307179586},
+		{Triangle{2, 2, 2}, 6},
 	}
 
 	for _, tt := range cases {

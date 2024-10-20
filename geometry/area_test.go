@@ -37,7 +37,8 @@ func TestArea(t *testing.T) {
 	}
 }
 
-func checkArea(t *testing.T, s Shape, want float64) {
+func checkArea(t testing.TB, s Shape, want float64) {
+	t.Helper()
 	got := s.Area()
 	assert(t, s, got, want)
 }

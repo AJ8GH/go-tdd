@@ -9,8 +9,6 @@ type Triangle struct {
 }
 
 func (t Triangle) Area() float64 {
-	// p := t.Perimeter()
-	// s := p / 2
 	return 0.25 * math.Sqrt(
 		4*math.Pow(t.A, 2)*math.Pow(t.B, 2)-
 			math.Pow(math.Pow(t.A, 2)+math.Pow(t.B, 2)-math.Pow(t.C, 2), 2))

@@ -30,7 +30,8 @@ func TestPerimeter(t *testing.T) {
 	}
 }
 
-func checkPerimeter(t *testing.T, s Shape, want float64) {
+func checkPerimeter(t testing.TB, s Shape, want float64) {
+	t.Helper()
 	got := s.Perimeter()
 	assert(t, s, got, want)
 }

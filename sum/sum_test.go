@@ -5,7 +5,8 @@ import (
 	"testing"
 )
 
-func checkSums[T any](t *testing.T, got, want T) {
+func checkSums[T any](t testing.TB, got, want T) {
+	t.Helper()
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v want %v", got, want)
 	}

@@ -3,15 +3,24 @@ package dictionary
 import "testing"
 
 func TestDictionary(t *testing.T) {
-	d := Dictionary{"test": "test def"}
-	got := d.Search("test")
-	want := "test def"
-	assert(t, got, want)
+	t.Run("happy", func(t *testing.T) {
+		d := Dictionary{"test": "test def"}
+		got, err := d.Search("test")
+		assert(t, err, nil)
+		assert(t, got, "test def")
+	})
+
+	t.Run("sad", func(t *testing.T) {
+		d := Dictionary{}
+		got, err := d.Search("test")
+		assert(t, err, ErrNoWordFound)
+		assert(t, got, "")
+	})
 }
 
-func assert(t testing.TB, got, want string) {
+func assert[T comparable](t testing.TB, got, want T) {
 	t.Helper()
 	if got != want {
-		t.Errorf("got %q want %q", got, want)
+		t.Errorf("got %v want %v", got, want)
 	}
 }

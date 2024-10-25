@@ -31,3 +31,23 @@ func (d Dictionary) Add(word string, definition string) error {
 	d[word] = definition
 	return nil
 }
+
+func (d Dictionary) Update(word string, definition string) error {
+	_, exists := d[word]
+	if !exists {
+		return ErrNoWordFound
+	}
+
+	d[word] = definition
+	return nil
+}
+
+func (d Dictionary) Delete(word string) error {
+	_, exists := d[word]
+	if !exists {
+		return ErrNoWordFound
+	}
+
+	delete(d, word)
+	return nil
+}

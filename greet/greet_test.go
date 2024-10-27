@@ -11,7 +11,7 @@ func TestGreet(t *testing.T) {
 
 	got := buffer.String()
 	want := "Hello, Adam"
-	
+
 	assert(t, got, want)
 }
 

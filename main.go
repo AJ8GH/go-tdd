@@ -14,7 +14,7 @@ func MyGreeterHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	countdown.Countdown(os.Stdout)
+	countdown.Countdown(&countdown.DefaultSleeper{}, os.Stdout)
 
 	log.Fatal(http.ListenAndServe(":5001", http.HandlerFunc(MyGreeterHandler)))
 }

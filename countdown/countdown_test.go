@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 )
 
 const (
@@ -23,6 +24,14 @@ func (c *SpyCountdownOperations) Write(p []byte) (n int, err error) {
 
 func (c *SpyCountdownOperations) Sleep() {
 	c.Calls = append(c.Calls, sleep)
+}
+
+type SpyTime struct {
+	durationSlept time.Duration
+}
+
+func (s *SpyTime) Sleep(duration time.Duration) {
+	s.durationSlept = duration
 }
 
 func TestCountdown(t *testing.T) {
@@ -54,7 +63,17 @@ func TestCountdown(t *testing.T) {
 	})
 }
 
+func TestConfigurableSleeper(t *testing.T) {
+	sleepTime := 5 * time.Second
+	spyTime := &SpyTime{}
+	sleeper := ConfigurableSleeper{sleepTime, spyTime.Sleep}
+	sleeper.Sleep()
+
+	assert(t, spyTime.durationSlept, sleepTime, "%q")
+}
+
 func assert[T comparable](t testing.TB, got, want T, verb string) {
+	t.Helper()
 	if got != want {
 		t.Errorf(fmt.Sprintf("got %v want %v", verb, verb), got, want)
 	}

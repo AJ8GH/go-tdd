@@ -26,7 +26,7 @@ func TestWebsiteChecker(t *testing.T) {
 	got := CheckWebsites(mockWebsiteChecker, websites)
 
 	if !reflect.DeepEqual(got, want) {
-		t.Errorf("got %v want %v", got, want)
+		t.Errorf("\ngot  %v \nwant %v", got, want)
 	}
 }
 
@@ -36,7 +36,11 @@ func BenchmarkCheckWebsites(b *testing.B) {
 		urls[i] = "a url"
 	}
 
-	CheckWebsites(slowWebsiteChecker, urls)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		CheckWebsites(slowWebsiteChecker, urls)
+	}
 }
 
 func slowWebsiteChecker(_ string) bool {

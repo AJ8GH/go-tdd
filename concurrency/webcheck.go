@@ -1,10 +1,12 @@
 package webcheck
 
-type WebsiteChecker func(string) bool
-type result struct {
-	string
-	bool
-}
+type (
+	WebsiteChecker func(string) bool
+	result         struct {
+		string
+		bool
+	}
+)
 
 func CheckWebsites(w WebsiteChecker, urls []string) map[string]bool {
 	results := make(map[string]bool)

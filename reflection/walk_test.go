@@ -113,6 +113,44 @@ func TestWalk(t *testing.T) {
 		assertContains(t, got, "Moo")
 		assertContains(t, got, "Baa")
 	})
+
+	t.Run("Channels", func(t *testing.T) {
+		channel := make(chan simpleThing)
+
+		go func() {
+			channel <- simpleThing{"potato", 32}
+			channel <- simpleThing{"cat", 32}
+			close(channel)
+		}()
+
+		var got []string
+		want := []string{"potato", "cat"}
+
+		Walk(channel, func(s string) {
+			got = append(got, s)
+		})
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Got %q, want %q", got, want)
+		}
+	})
+
+	t.Run("Funcs", func(t *testing.T) {
+		input := func() (simpleThing, simpleThing) {
+			return simpleThing{"potato", 32}, simpleThing{"cat", 69}
+		}
+
+		var got []string
+		want := []string{"potato", "cat"}
+
+		Walk(input, func(s string) {
+			got = append(got, s)
+		})
+
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("Got %q, want %q", got, want)
+		}
+	})
 }
 
 func assertContains(t *testing.T, got []string, s string) {

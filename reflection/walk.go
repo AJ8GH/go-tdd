@@ -3,14 +3,27 @@ package reflection
 import "reflect"
 
 func Walk(x interface{}, fn func(s string)) {
-	val := reflect.ValueOf(x)
-	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
-		switch field.Kind() {
-		case reflect.String:
-			fn(field.String())
-		case reflect.Struct:
-			Walk(field.Interface(), fn)
+	val := getValue(x)
+
+	switch val.Kind() {
+	case reflect.Slice:
+		for i := 0; i < val.Len(); i++ {
+			Walk(val.Index(i).Interface(), fn)
 		}
+		return
+	case reflect.Struct:
+		for i := 0; i < val.NumField(); i++ {
+			Walk(val.Field(i).Interface(), fn)
+		}
+	case reflect.String:
+		fn(val.String())
 	}
+}
+
+func getValue(x interface{}) reflect.Value {
+	val := reflect.ValueOf(x)
+	if val.Kind() == reflect.Pointer {
+		val = val.Elem()
+	}
+	return val
 }

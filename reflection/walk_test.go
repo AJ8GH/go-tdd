@@ -51,6 +51,25 @@ func TestWalk(t *testing.T) {
 			thing{"potato", innerThing{"cat", 23}},
 			[]string{"potato", "cat"},
 		},
+		{
+			"Pointers",
+			&struct {
+				Thing string
+				Num   int
+			}{"potato", 32},
+			[]string{"potato"},
+		},
+		{
+			"Slices",
+			[]struct {
+				Thing string
+				Num   int
+			}{
+				{"potato", 32},
+				{"cat", 73},
+			},
+			[]string{"potato", "cat"},
+		},
 	}
 
 	for _, test := range cases {

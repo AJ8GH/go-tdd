@@ -5,18 +5,20 @@ import "reflect"
 func Walk(x interface{}, fn func(s string)) {
 	val := getValue(x)
 
+	numVals := 0
+	var getField func(int) reflect.Value
 	switch val.Kind() {
 	case reflect.Slice:
-		for i := 0; i < val.Len(); i++ {
-			Walk(val.Index(i).Interface(), fn)
-		}
-		return
+		numVals = val.Len()
+		getField = val.Index
 	case reflect.Struct:
-		for i := 0; i < val.NumField(); i++ {
-			Walk(val.Field(i).Interface(), fn)
-		}
+		numVals = val.NumField()
+		getField = val.Field
 	case reflect.String:
 		fn(val.String())
+	}
+	for i := 0; i < numVals; i++ {
+		Walk(getField(i).Interface(), fn)
 	}
 }
 

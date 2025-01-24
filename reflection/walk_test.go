@@ -6,7 +6,12 @@ import (
 )
 
 type (
-	thing struct {
+	simpleThing struct {
+		Thing string
+		Num   int
+	}
+
+	nestedThing struct {
 		ThingString string
 		InnerThing  innerThing
 	}
@@ -48,7 +53,7 @@ func TestWalk(t *testing.T) {
 		},
 		{
 			"One string, one int",
-			thing{"potato", innerThing{"cat", 23}},
+			nestedThing{"potato", innerThing{"cat", 23}},
 			[]string{"potato", "cat"},
 		},
 		{
@@ -69,6 +74,22 @@ func TestWalk(t *testing.T) {
 				{"cat", 73},
 			},
 			[]string{"potato", "cat"},
+		},
+		{
+			"Arrays",
+			[2]simpleThing{
+				{"potato", 32},
+				{"cat", 73},
+			},
+			[]string{"potato", "cat"},
+		},
+		{
+			"Maps",
+			map[string]string{
+				"Cow":   "Moo",
+				"Sheep": "Baa",
+			},
+			[]string{"Moo", "Baa"},
 		},
 	}
 

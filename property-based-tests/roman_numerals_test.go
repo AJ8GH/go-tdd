@@ -1,13 +1,15 @@
 package propertybasedtests
 
 import (
+	"fmt"
 	"testing"
+	"testing/quick"
 )
 
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
-		arabic int
-		want   string
+		arabic uint16
+		roman  string
 	}{
 		{1, "I"},
 		{2, "II"},
@@ -31,7 +33,6 @@ func TestRomanNumerals(t *testing.T) {
 		{48, "XLVIII"},
 		{49, "XLIX"},
 		{50, "L"},
-		{50, "L"},
 		{90, "XC"},
 		{98, "XCVIII"},
 		{99, "XCIX"},
@@ -48,11 +49,36 @@ func TestRomanNumerals(t *testing.T) {
 	}
 
 	for _, test := range cases {
-		got := ToRoman(test.arabic)
-		if got != test.want {
-			t.Run(test.want, func(t *testing.T) {
-				t.Errorf(`got "%s", want "%s"`, got, test.want)
-			})
+		t.Run(fmt.Sprintf(`Convert "%d" to "%s`, test.arabic, test.roman), func(t *testing.T) {
+			got := ToRoman(test.arabic)
+			if got != test.roman {
+				t.Errorf(`got "%s", want "%s"`, got, test.roman)
+			}
+		})
+
+		t.Run(fmt.Sprintf(`Convert "%s" to "%d`, test.roman, test.arabic), func(t *testing.T) {
+			got := ToArabic(test.roman)
+			if got != test.arabic {
+				t.Errorf(`got "%d", want "%d"`, got, test.arabic)
+			}
+		})
+	}
+}
+
+func TestPropertiesOfConversion(t *testing.T) {
+	assertion := func(arabic uint16) bool {
+		if arabic > 3999 {
+			return true
 		}
+		t.Log("testing", arabic)
+		roman := ToRoman(arabic)
+		fromRoman := ToArabic(roman)
+		return fromRoman == arabic
+	}
+
+	if err := quick.Check(assertion, &quick.Config{
+		MaxCount: 1000,
+	}); err != nil {
+		t.Error("failed checks", err)
 	}
 }
